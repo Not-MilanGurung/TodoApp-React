@@ -1,29 +1,32 @@
 import TodoItem from "./TodoItem";
 import { useState } from "react";
 
+import { statues } from "../constants";
+
 function TodoList({ items, setItems, storeValue}) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
 
+	// Filter logic is run everytime searchTerm and statusFilter is changed
 	const filteredItems = items.filter((item) => {
 		const matchesSearch = item.name
 		  .toLowerCase()
 		  .includes(searchTerm.toLowerCase());
-		console.log(item.status, statusFilter);
-		const matchesStatus =
-		  statusFilter === "all" || item.status == statusFilter;
+		const matchesStatus = statusFilter === "all" || item.status == statusFilter;
 	  
 		return matchesSearch && matchesStatus;
 	});
 
+	// This method is passed to TodoItem component for delete button
 	const deleteItem = (index) => {
 		const confirmDelete = window.confirm("Are you sure you want to delete this todo?");
-
 		if (!confirmDelete) return;
+
 		const updatedItems = items.filter((_, i) => i !== index);
 		setItems(updatedItems);
 		storeValue(updatedItems);
 	}
+
 	return (
 	  <div className="max-w-6xl mx-auto bg-gray-900 rounded-2xl shadow-xl p-6">
 		<h2 className="text-3xl font-bold text-center text-white mb-6">
@@ -41,16 +44,17 @@ function TodoList({ items, setItems, storeValue}) {
 		/>
 
 		{/* Status Filter */}
-		<select
-			value={statusFilter}
+		<select value={statusFilter}
 			onChange={(e) => setStatusFilter(e.target.value)}
-			className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-		>
+			className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 			<option value="all">All</option>
-			<option value="pending">Pending</option>
-			<option value="completed">Completed</option>
+			{statues.map(value =>
+				<option value={value.name}>{value.name}</option>
+			)}
 		</select>
 		</div>
+
+		{/* List Table */}
 		<div className="overflow-x-auto">
 		  <table className="min-w-full border-collapse">
 			<thead>
@@ -69,7 +73,7 @@ function TodoList({ items, setItems, storeValue}) {
 			  ))}
 			</tbody>
 		  </table>
-		</div>
+		</div> {/* List Table End */}
 	  </div>
 	);
   }

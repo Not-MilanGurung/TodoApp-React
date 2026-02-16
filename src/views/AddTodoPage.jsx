@@ -1,18 +1,22 @@
 import { useState } from "react"
 import { useNavigate } from "react-router";
 
+import { statues } from "../constants";
+
 function AddTodoPage({items, setItems, storeValue}) {
 	const [item, setItem] = useState({
 		name: "",
 		desc: "",
-		status: "pending"
+		status: statues[0].name
 	});
+
 	const handleChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
 		setItem(values => ({...values, [name]: value}));
 	}
 	const navigate = useNavigate();
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const updatedItems = [...items, {name: item.name,
@@ -44,6 +48,8 @@ function AddTodoPage({items, setItems, storeValue}) {
 				value={item.name}
 				onChange={handleChange}
 				required
+				pattern=".*\S.*"
+				title="Input words"
 				className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
 				placeholder="Enter todo title..."
 			/>
@@ -60,6 +66,8 @@ function AddTodoPage({items, setItems, storeValue}) {
 				onChange={handleChange}
 				required
 				rows="4"
+				pattern=".*\S.*"
+				title="Input words"
 				className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
 				placeholder="Write details about this task..."
 			></textarea>
@@ -76,17 +84,16 @@ function AddTodoPage({items, setItems, storeValue}) {
 				onChange={handleChange}
 				required
 				className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-				<option value="pending">Pending</option>
-				<option value="completed">Completed</option>
+				{statues.map(value => {
+					return <option value={value.name}>{value.name}</option>
+				})}
 			</select>
 			</div>
 
 			{/* Submit Button */}
 			<div className="pt-4">
-			<button
-				type="submit"
-				className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition duration-200 shadow-md"
-			>
+			<button type="submit"
+				className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg transition duration-200 shadow-md">
 				Save Todo
 			</button>
 			</div>

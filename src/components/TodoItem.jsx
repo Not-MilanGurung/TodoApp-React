@@ -1,13 +1,9 @@
 import { Link } from "react-router";
 
+import { statues } from "../constants";
+
 function TodoItem({ item, index, deleteItem }) {
-	const statusColor =
-	  item.status === "completed"
-		? "bg-green-500/20 text-green-400"
-		: item.status === "pending"
-		? "bg-yellow-500/20 text-yellow-400"
-		: "bg-gray-500/20 text-gray-400";
-  
+	const statusColor = statues.find(value => value.name === item.status).color;
 	return (
 	  <tr className="border-b border-gray-800 hover:bg-gray-800 transition duration-200">
 		<td className="px-4 py-3 text-gray-300">{index + 1}</td>

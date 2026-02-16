@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router";
 import { useState} from "react";
 
+import { statues } from "../constants";
+
 function EditTodoPage({ items, setItems, storeValue }) {
 	const { id:index } = useParams();
 	const navigate = useNavigate();
@@ -21,23 +23,23 @@ function EditTodoPage({ items, setItems, storeValue }) {
 
 	// Handle submit
 	function handleSubmit(e) {
-	e.preventDefault();
+		e.preventDefault();
 
-	const updatedItems = [...items];
-	updatedItems[itemIndex] = formData;
+		const updatedItems = [...items];
+		updatedItems[itemIndex] = formData;
 
-	setItems(updatedItems);
-	storeValue(updatedItems); // Save to local storage
-	navigate("/"); // Go back to list page
+		setItems(updatedItems);
+		storeValue(updatedItems); // Save to local storage
+		navigate("/"); // Go back to list page
 	}
 
 	// Invalid index guard
 	if (!items[itemIndex]) {
-	return (
-		<main className="flex justify-center bg-gray-950 text-white">
-		<div className="text-xl text-red-400">Invalid Todo Item</div>
-		</main>
-	);
+		return (
+			<main className="flex justify-center bg-gray-950 text-white">
+				<div className="text-xl text-red-400">Invalid Todo Item</div>
+			</main>
+		);
 	}
 
 	return (
@@ -80,14 +82,15 @@ function EditTodoPage({ items, setItems, storeValue }) {
 		<div className="space-y-2">
 			<label className="block text-sm text-gray-300">Status</label>
 			<select
-			name="status"
-			value={formData.status}
-			onChange={handleChange}
-			required
-			className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+				name="status"
+				value={formData.status}
+				onChange={handleChange}
+				required
+				className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 			>
-			<option value="pending">Pending</option>
-			<option value="completed">Completed</option>
+			{statues.map(value => 
+				<option value={value.name}>{value.name}</option>
+			)}
 			</select>
 		</div>
 
